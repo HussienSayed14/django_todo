@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from todo_project.todo_app.models import Task, CustomUser
+from todo_app.models import Task, CustomUser
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     """Serializer for task model."""
 
-    user = CustomUserSerializer(read=True)
+    user = CustomUserSerializer()
 
     class Meta:
         model = Task

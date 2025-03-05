@@ -1,7 +1,8 @@
 
 
-
-from todo_project.todo_app.models import CustomUser, Task
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate, get_user_model
+from todo_app.models import CustomUser, Task
 
 
 class TaskService:
@@ -25,6 +26,16 @@ class TaskService:
 class UserService:
 
     @staticmethod
+    def get_tokens_for_user(user):
+        """Generates JWT access & refresh tokens for an authenticated user."""
+        refresh = RefreshToken.for_user(user)
+        return {
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+        }
+
+
+    @staticmethod
     def create_user(validated_data):
         """Creates a user with a hashed password."""
         user = CustomUser(
@@ -35,4 +46,18 @@ class UserService:
         user.set_password(validated_data["password"])  # Hash the password
         user.save()
         return user
+    
+    @staticmethod
+    def login_user(username, password):
+        """Authenticates user and returns JWT tokens & user data."""
+        if not username or not password:
+            return {}, False, "Username and password are required."
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            tokens = UserService.get_tokens_for_user(user)
+            return {"user": user, "tokens": tokens}, True, "Success"
+        
+        return {},False ,"Invalid credentials"
     

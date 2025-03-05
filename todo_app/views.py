@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from todo_project.todo_app import serializers
-from todo_project.todo_app.serializers import RegisterUserSerializer, TaskSerializer
-from todo_project.todo_app.service import TaskService, UserService
+from todo_app.serializers import CustomUserSerializer, RegisterUserSerializer, TaskSerializer
+from todo_app.service import TaskService, UserService
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
@@ -54,6 +53,22 @@ def registet_user(request):
         }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def login_user(request):
+    username = request.data.get("username")
+    password = request.data.get("password")
+
+    result, flag, message = UserService.login_user(username, password) 
+
+
+    if not flag:
+        return Response({"error": message}, status=status.HTTP_400_BAD_REQUEST)
+    
+    user_data = CustomUserSerializer(result["user"]).data
+    return Response({"user": user_data, "tokens": result["tokens"]}, status=status.HTTP_200_OK)
+
 
 
 
