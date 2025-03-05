@@ -22,7 +22,7 @@ def get_tokens_for_user(user):
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
-def get_tasks():
+def get_tasks(request):
     """Fetch all tasks."""
     tasks = TaskService.get_tasks()
     serializer = TaskSerializer(tasks, many=True)
