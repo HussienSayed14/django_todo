@@ -13,11 +13,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     """Serializer for task model."""
 
-    user = CustomUserSerializer()
-
     class Meta:
         model = Task
-        fields = ["id", "title", "created_at", "due_date", "status", "user"]
+        fields = ["id", "title", "created_at", "due_date", "status"]
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):

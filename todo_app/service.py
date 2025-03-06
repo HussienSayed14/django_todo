@@ -21,6 +21,12 @@ class TaskService:
         return Task.objects.create(user=user, **validated_data)
     
 
+    @staticmethod
+    def get_task_by_id(task_id):
+        """Fetches a task by its ID."""
+        return Task.objects.filter(id=task_id).first()
+    
+
 
     
 class UserService:
