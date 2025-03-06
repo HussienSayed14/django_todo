@@ -24,6 +24,9 @@ def get_tokens_for_user(user):
 @permission_classes([IsAuthenticated])
 def get_tasks(request):
     """Fetch all tasks."""
+
+    user = request.user
+    print(f"User Data : {user}")
     tasks = TaskService.get_tasks()
     serializer = TaskSerializer(tasks, many=True)
     return Response(serializer.data)

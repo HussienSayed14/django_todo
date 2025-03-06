@@ -10,6 +10,7 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     """Extends Django's default user model with custom fields."""
     
+    id: int
     phone_number = models.CharField(max_length=15, db_index=True)
     date_of_birth = models.DateField(blank=True, null=True)
 
@@ -22,7 +23,7 @@ class CustomUser(AbstractUser):
     """
 
     def __str__(self):
-        return self.username
+        return f"Username: {self.username} Phone: {self.phone_number} DOB: {self.date_of_birth} ID: {self.id}"
     
 
 
